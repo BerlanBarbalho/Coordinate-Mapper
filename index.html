@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coordinate Mapper</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="image-container" id="imageContainer">
+            <img id="targetImage">
+            <div class="line" id="lineX"></div>
+            <div class="line" id="lineY"></div>
+            <div class="line" id="lineDiagonal"></div>
+            <div class="selection-box" id="selectionBox"></div>
+        </div>
+        <div class="coordinates" id="coordinates"></div>
+        <div class="log-coordinates" id="logCoordinates"></div>
+    </div>
+    <input type="file" id="imageLoader" name="imageLoader" accept="image/*">
+    <button id="capture">Salvar Seleção</button>
+    <script src="script.js"></script>
+</body>
+</html>
