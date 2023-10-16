@@ -30,6 +30,24 @@ body {
  input[type="file"] {
      display: none;
 }
+input[type="text"] {
+    background: #222;
+    border: 1px solid #000;
+    color: #ccc;
+    width: 80px;
+    height: 15px;
+    text-align: center;
+    font-size: 12px;
+}
+input[type="text"]:hover, input[type="text"]:focus {
+    outline: 0;
+}
+#check-color {
+    width: 100%;
+    height: 20px;
+    margin: 1px;
+    background: #444444;
+}
  label {
      box-shadow:inset 0px 34px 0px -15px #b54b3a;
      background-color:#a73f2d;
@@ -84,6 +102,9 @@ body {
      position: relative;
      display: inline-block;
 }
+ .send-img {
+     margin-top: -40px;
+ }
  .coordinates {
      position: absolute;
      top: 100%;
@@ -139,7 +160,7 @@ body {
      background: rgb(0, 0, 0, 0.5);
      border: 1px solid rgba(0, 0, 0, 0.9);
      padding: 10px;
-     min-width: 300px;
+     min-width: 350px;
 }
  .container tr td {
      vertical-align: top;
@@ -148,9 +169,17 @@ body {
      min-width: 100%;
      text-align: center;
 }
- .log-clicks tr th {
-     background: rgba(0, 0, 0, 0.3)!important;
-     border: 1px solid rgba(0, 0, 0, 0.3)!important;
+.log-clicks tr th {
+    background: rgba(0, 0, 0, 0.3)!important;
+    border: 1px solid rgba(0, 0, 0, 0.3)!important;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    text-align: center;
+    font-size: 14px;
+}
+.log-clicks tr th:first-child {
+    text-align: left;
+    padding-left: 10px;
 }
  .log-clicks tr td {
      background: rgba(0, 0, 0, 0.1)!important;
@@ -168,3 +197,15 @@ body {
      padding-top: 10px;
      font-size: 12px;
 }
+
+#red-point {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: red;
+    border-radius: 50%;
+    display: none;
+    transform: translate(-50%, -50%);
+    border: 2px solid black;
+}
+

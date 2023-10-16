@@ -10,13 +10,35 @@ const captureButton = document.getElementById('capture');
 const logCoordinates = document.getElementById('logCoordinates');
 const pixelColor = document.getElementById('pixelColor');
 const zoomLens = document.getElementById('zoomLens');
+const colorInput = document.getElementById("color-input");
+const checkColor = document.getElementById("check-color");
+const sendImg = document.getElementById('send-img');
+const inputX = document.getElementById('coordx-input');
+const inputY = document.getElementById('coordy-input');
 
 imageLoader.addEventListener('change', handleImage, false);
+inputX.addEventListener('input', updateRedDotPosition);
+inputY.addEventListener('input', updateRedDotPosition);
+
+function updateRedDotPosition() {
+    const x = inputX.value;
+    const y = inputY.value;
+
+    // Se ambos os valores estiverem presentes
+    if(x && y) {
+        const redDot = document.getElementById('red-point');
+        redDot.style.left = x + 'px';
+        redDot.style.top = y + 'px';
+        redDot.style.display = 'block'; // Mostra o ponto vermelho
+    }
+}
+
 
 function handleImage(e) {
     const reader = new FileReader();
     reader.onload = function(event) {
         targetImage.src = event.target.result;
+        sendImg.classList.remove('send-img');
     };
     reader.readAsDataURL(e.target.files[0]);
 }
@@ -159,24 +181,17 @@ captureButton.addEventListener('click', function() {
     const width = Math.min(rect.right, selectionRect.right) - Math.max(rect.left, selectionRect.left);
     const height = Math.min(rect.bottom, selectionRect.bottom) - Math.max(rect.top, selectionRect.top);
 
-    if (width <= 0 || height <= 0) {
+    if (width <= 0 || height <= 0 || x + width > targetImage.width || y + height > targetImage.height) {
         alert('Please select a valid area.');
         return;
     }
 
-    const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = targetImage.width;
-    tempCanvas.height = targetImage.height;
-    const tempCtx = tempCanvas.getContext('2d');
-    
-    tempCtx.drawImage(targetImage, 0, 0, targetImage.width, targetImage.height);
-    
     const finalCanvas = document.createElement('canvas');
     finalCanvas.width = width;
     finalCanvas.height = height;
     const finalCtx = finalCanvas.getContext('2d');
-    
-    finalCtx.drawImage(tempCanvas, x, y, width, height, 0, 0, width, height);
+
+    finalCtx.drawImage(targetImage, x, y, width, height, 0, 0, width, height);
 
     const img = finalCanvas.toDataURL("image/png");
 
@@ -188,4 +203,9 @@ captureButton.addEventListener('click', function() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+});
+
+
+colorInput.addEventListener("input", function() {
+    checkColor.style.backgroundColor = colorInput.value;
 });
