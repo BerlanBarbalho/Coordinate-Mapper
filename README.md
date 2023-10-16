@@ -9,5 +9,14 @@ Whether you're a designer, developer, or simply someone in need of scrutinizing 
 - **Area Selection**: Mark a specific region of the image with our user-friendly selection feature.
 - **Instant Saving**: With a single click, save your selected area directly into your files as a PNG image.
 - **Coordinate Logging**: Keep a visual log of the points you've clicked on for deeper analysis or future reference.
+- **Pixel Color Capture**: Get the exact color of a pixel with a single click, providing valuable insights for your projects.
 
-Whether for professional projects or personal use, the Image Coordinate Mapper simplifies the image analysis and selection process, saving you both time and effort.
+[**Try it Online**](https://berlanbarbalho.github.io/Coordinate-Mapper/)
+
+## Usage
+
+To use the Image Coordinate Mapper, simply [visit our website](https://berlanbarbalho.github.io/Coordinate-Mapper/) and follow the on-screen instructions.
+
+## License
+
+This project is licensed under [The GNU General Public License](LICENSE).
