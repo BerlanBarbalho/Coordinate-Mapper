@@ -8,19 +8,52 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.js"></script>
 </head>
 <body>
-    <div class="wrapper">
-        <div class="image-container" id="imageContainer">
-            <img id="targetImage">
-            <div class="line" id="lineX"></div>
-            <div class="line" id="lineY"></div>
-            <div class="line" id="lineDiagonal"></div>
-            <div class="selection-box" id="selectionBox"></div>
-        </div>
-        <div class="coordinates" id="coordinates"></div>
-        <div class="log-coordinates" id="logCoordinates"></div>
-    </div>
-    <input type="file" id="imageLoader" name="imageLoader" accept="image/*">
-    <button id="capture">Save Selection</button>
+    <table class="container">
+        <tr>
+            <th class="img-map">
+                Coordinate Mapper
+            </th>
+            <th class="img-info">
+                Log Info
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <div class="wrapper">
+                    <div class="image-container" id="imageContainer">
+                        <img id="targetImage">
+                        <div class="line" id="lineX"></div>
+                        <div class="line" id="lineY"></div>
+                        <div class="line" id="lineDiagonal"></div>
+                        <div class="selection-box" id="selectionBox"></div>
+                    </div>
+                    <div class="coordinates" id="coordinates"></div>
+                    <div class="log-coordinates" id="logCoordinates"></div>
+                    <div class="pixel-color" id="pixelColor"></div>
+                    <div class="zoom-lens" id="zoomLens"></div>
+                </div>
+            </td>
+            <td colspan="2">
+                <table id="logClicks" class="log-clicks">
+                    <tr>
+                        <th>Coord X</th>
+                        <th>Coord Y</th>
+                        <th>Color</th>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="imageLoader">Send file</label>
+                <input type="file" id="imageLoader" name="imageLoader" accept="image/*">
+                <button id="capture">Save to PNG</button>
+                <div colspan="2" class="dev">
+                    Developer by <a href="https://github.com/BerlanBarbalho/Coordinate-Mapper" target="_blank">BerlanBarbalho</a>
+                </div>
+            </td>
+        </tr>
+    </table>
     <script src="script.js"></script>
 </body>
 </html>

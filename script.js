@@ -8,8 +8,9 @@ const coordinates = document.getElementById('coordinates');
 const selectionBox = document.getElementById('selectionBox');
 const captureButton = document.getElementById('capture');
 const logCoordinates = document.getElementById('logCoordinates');
+const pixelColor = document.getElementById('pixelColor');
+const zoomLens = document.getElementById('zoomLens');
 
-// Carregar imagem
 imageLoader.addEventListener('change', handleImage, false);
 
 function handleImage(e) {
@@ -24,7 +25,6 @@ targetImage.addEventListener('dragstart', function(e) {
     e.preventDefault();
 });
 
-// Exibir coordenadas
 targetImage.addEventListener('mousemove', function(e) {
     coordinates.style.display = 'block';
     const rect = e.target.getBoundingClientRect();
@@ -43,13 +43,12 @@ imageContainer.addEventListener('mouseleave', function() {
     coordinates.style.display = 'none';
 });
 
-// Seleção de área
 let isSelecting = false;
 let initialX, initialY;
 
 imageContainer.addEventListener('mousedown', function(e) {
     if (e.target === captureButton) {
-        return; // Se o botão de captura for clicado, não faça nada.
+        return;
     }
     isSelecting = true;
     const rect = imageContainer.getBoundingClientRect();
@@ -74,6 +73,36 @@ imageContainer.addEventListener('mousemove', function(e) {
     }
 });
 
+imageContainer.addEventListener('mousemove', function (e) {
+    const rect = e.target.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const imageSize = targetImage.getBoundingClientRect();
+    const lensSize = 100;
+    const scale = 2;
+
+    const lensX = x - lensSize / 2;
+    const lensY = y - lensSize / 2;
+
+    zoomLens.style.width = lensSize + 'px';
+    zoomLens.style.height = lensSize + 'px';
+    zoomLens.style.left = lensX + 'px';
+    zoomLens.style.top = lensY + 'px';
+    zoomLens.style.display = 'block';
+
+    zoomLens.style.backgroundImage = `url('${targetImage.src}')`;
+    zoomLens.style.backgroundSize = `${targetImage.width * scale}px ${targetImage.height * scale}px`;
+
+    const backgroundX = -((x / imageSize.width) * (targetImage.width * scale) - lensSize / 2);
+    const backgroundY = -((y / imageSize.height) * (targetImage.height * scale) - lensSize / 2);
+    zoomLens.style.backgroundPosition = `${backgroundX}px ${backgroundY}px`;
+});
+
+imageContainer.addEventListener('mouseleave', function () {
+    zoomLens.style.display = 'none';
+});
+
 imageContainer.addEventListener('mouseup', function() {
     isSelecting = false;
 });
@@ -83,21 +112,44 @@ imageContainer.addEventListener('click', function(e) {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    // Criar uma div para exibir as coordenadas
+    // Arredonda as coordenadas para valores inteiros
+    const roundedX = Math.floor(x);
+    const roundedY = Math.floor(y);
+
     const coordDiv = document.createElement('div');
     coordDiv.classList.add('clicked-coordinate');
-    coordDiv.textContent = `X: ${x.toFixed(2)}, Y: ${y.toFixed(2)}`;
+    coordDiv.textContent = `X: ${roundedX}, Y: ${roundedY}`;
 
-    // Posicionar a div no local do clique
+    const canvas = document.createElement('canvas');
+    canvas.width = 1;
+    canvas.height = 1;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(targetImage, x, y, 1, 1, 0, 0, 1, 1);
+    const pixelData = ctx.getImageData(0, 0, 1, 1).data;
+
+    const colorHex = `#${Array.from(pixelData)
+        .slice(0, 3)
+        .map(value => value.toString(16).padStart(2, '0'))
+        .join('')}`;
+
+    coordDiv.innerHTML = `X: <b>${roundedX}</b>, Y: <b>${roundedY}</b><br>Color: <b style="text-transform: uppercase; color: ${colorHex};">${colorHex}</b>`;
+
     coordDiv.style.left = x + 'px';
     coordDiv.style.top = y + 'px';
 
-    // Adicionar a div ao imageContainer
     imageContainer.appendChild(coordDiv);
+
+    const logTable = document.getElementById('logClicks');
+    const newRow = logTable.insertRow(-1);
+    const cell1 = newRow.insertCell(0);
+    const cell2 = newRow.insertCell(1);
+    const cell3 = newRow.insertCell(2);
+
+    cell1.textContent = `${roundedX}`;
+    cell2.textContent = `${roundedY}`;
+    cell3.innerHTML = `<span style="color:${colorHex};text-transform: uppercase;">${colorHex}</span>`;
 });
 
-
-// Salvar seleção como PNG
 captureButton.addEventListener('click', function() {
     const rect = targetImage.getBoundingClientRect();
     const selectionRect = selectionBox.getBoundingClientRect();
